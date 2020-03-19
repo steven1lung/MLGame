@@ -49,4 +49,34 @@ def ml_loop():
             comm.send_instruction(scene_info.frame, PlatformAction.SERVE_TO_LEFT)
             ball_served = True
         else:
-            comm.send_instruction(scene_info.frame, PlatformAction.MOVE_LEFT)
+            ball_x=scene_info.ball[0]+2.5
+            ball_y=scene_info.ball[1]
+            platform_x=scene_info.platform[0]+20
+            bias=ball_x-platform_x
+            
+            #ball speed 7  platform speed 5 (75,400)
+
+            if(bias<0):
+                bias*=-1
+
+            should_plat=200-ball_x
+            
+            
+
+        
+            if(ball_y<300):
+                if(should_plat>platform_x):
+                    comm.send_instruction(scene_info.frame, PlatformAction.MOVE_RIGHT)
+                    if(ball_y<250&ball_y>200):
+                        for x in range(0,2):
+                            comm.send_instruction(scene_info.frame, PlatformAction.NONE)
+                else:
+                    comm.send_instruction(scene_info.frame,PlatformAction.MOVE_LEFT)
+                    if(ball_y<250&ball_y>200):
+                        for x in range(0,2):
+                            comm.send_instruction(scene_info.frame, PlatformAction.NONE)
+            elif(ball_x>platform_x):
+                comm.send_instruction(scene_info.frame, PlatformAction.MOVE_RIGHT)
+            elif(ball_x<platform_x):
+                comm.send_instruction(scene_info.frame, PlatformAction.MOVE_LEFT)
+            
